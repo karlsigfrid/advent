@@ -1,0 +1,58 @@
+---
+title: "Untitled"
+output: html_document
+date: "2022-12-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Prepare data
+```{r}
+library(dplyr)
+piles <- c("SZPDLBFC", "NVGPHWB", "FWBJG", "GJNFLWCS", "WJLTPMSH",
+           "BCWGFS", "HTPMQBW", "FSWT", "NCR") %>% strsplit(split="")
+#piles <- c("ZN", "MCD", "P") %>% strsplit(split="")
+
+s <- readLines("data/5b.txt")
+breakp <- which(s == "")
+s2 <- tail(s, -breakp) %>% gsub(" ", "", .)
+instruct <- strsplit(s2, split="move|from|to") %>%
+  lapply(function(q) as.numeric(q[q != ""]))
+```
+
+# Part 1
+
+```{r}
+move <- function(v, piles){
+    piles[[v[3]]] <-
+      c(piles[[v[3]]], rev(tail(piles[[v[2]]], v[1])))
+    piles[[v[2]]] <- head(piles[[v[2]]], -v[1])
+    piles
+}
+n <- length(instruct)
+
+for (i in 1:n) piles <- 
+  move(v=instruct[[i]], piles=piles)
+
+lapply(piles, tail, 1) %>% unlist %>% paste(collapse = "")
+```
+
+# Part 2
+Do not run part 1 before running this.
+```{r}
+move <- function(v, piles){
+    piles[[v[3]]] <-
+      c(piles[[v[3]]], tail(piles[[v[2]]], v[1]))
+    piles[[v[2]]] <- head(piles[[v[2]]], -v[1])
+    piles
+}
+n <- length(instruct)
+
+for (i in 1:n) piles <- 
+  move(v=instruct[[i]], piles=piles)
+
+lapply(piles, tail, 1) %>% unlist %>% paste(collapse = "")
+```
+

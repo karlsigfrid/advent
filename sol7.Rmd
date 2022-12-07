@@ -1,0 +1,68 @@
+---
+title: "Untitled"
+output: html_document
+date: "2022-12-07"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+s <- readLines("data/7b.txt")
+```
+
+Make a list with one element per file.
+```{r}
+myloc_name <- function(v){
+  if(is.null(v)) return(NULL)
+  sapply(1:length(v), function(q) paste(v[1:q], collapse="_"))
+}
+
+myloc <- c()
+files <- list()
+counter <- 0
+for (this in s){
+  if(this == "$ cd /") myloc <- c()
+  if(this == "$ cd ..") myloc <- head(myloc, -1)
+  if(grepl("[$] cd \\w", this)) myloc <- c(myloc, gsub(".+ (.+)$", "\\1", this))
+  
+  if (grepl("^\\d", this)){
+    files <- c(files, list(list(name=paste0("f", counter),
+                           size = as.numeric(gsub("\\D", "", this)),
+                           loc = myloc_name(myloc)
+                           )))
+  }
+  counter <- counter +1
+}
+#files
+```
+
+# Part 1
+
+Make a list of all directories. Check the size of each directory.
+```{r}
+dirs <- lapply(files, function(q) q$loc) |> unlist() |> unique()
+
+sizes <- sapply(dirs, function(x){
+  all_size <- 0
+  for (this in files){
+    if(x %in% this$loc) all_size <- all_size + this$size
+  }
+  all_size
+})
+
+sizes[sizes <= 100000] |> sum()
+```
+
+## Part 2
+```{r}
+cap <- 70000000
+req <- 30000000
+allowed <- cap - req
+tot_file_size <- sapply(files, function(q) q$size) |> sum()
+freeup <- tot_file_size - allowed
+
+sort(sizes)[sort(sizes) >= freeup][1]
+```
+

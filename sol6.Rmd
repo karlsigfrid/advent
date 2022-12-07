@@ -1,0 +1,37 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+s <- readLines("data/6b.txt")
+v <- strsplit(s, "")[[1]]
+#n <- sapply(v, function(q) which(letters==q))
+```
+
+```{r}
+anyequal <- function(v){
+  n <- length(v)
+  sapply(1:n, function(q) any(v[q]==v[-q])) |> any()
+} 
+
+for(i in 1:(length(v)-3)){
+  if(!anyequal(v=v[i:(i+3)])){
+    print(i+3)
+    break
+  }
+}
+
+```
+
+# Part b
+
+```{r}
+for(i in 1:(length(v)-13)){
+  if(!anyequal(v=v[i:(i+13)])){
+    print(i+13)
+    break
+  }
+}
+```
+

@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Read data
+```{r}
+s <- readLines("data/1b.txt")
+s <- as.numeric(s)
+```
+
+# Part 1
+
+```{r}
+break_points <- c(0, which(is.na(s)), length(s) + 1)
+elves <- sapply(1:(length(break_points)-1), function(q)
+  sum(s[(break_points[q]+1):(break_points[q+1]-1)])) 
+max(elves)
+```
+
+# Part 2
+
+```{r}
+sum(tail(sort(elves), 3))
+```
+

@@ -1,0 +1,34 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+df <- read.csv("data/2b.txt", sep=" ", header=F)
+winloss <- expand.grid(c("A", "B", "C"), c("X", "Y", "Z"))
+winloss$score1 <- c(1, 1, 1, 2, 2, 2, 3, 3, 3)
+winloss$score2 <- c(3, 0, 6, 6, 3, 0, 0, 6, 3)
+```
+
+# Part 1
+
+```{r}
+apply(df, 1, function(q){
+  the_row <- winloss[winloss$Var1 == c(q[1]) & winloss$Var2 == c(q[2]),]
+  the_row$score1 + the_row$score2
+  }) |> sum()
+
+```
+# Part 2
+
+```{r}
+winloss$score3 <- c(3, 1, 2, 1, 2, 3, 2, 3, 1)
+winloss$score4 <- c(0, 0, 0, 3, 3, 3, 6, 6, 6)
+
+apply(df, 1, function(q){
+  the_row <- winloss[winloss$Var1 == c(q[1]) & winloss$Var2 == c(q[2]),]
+  the_row$score3 + the_row$score4
+  }) |> sum()
+
+```
+

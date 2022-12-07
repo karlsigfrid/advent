@@ -1,0 +1,40 @@
+---
+title: "Untitled"
+output: html_document
+date: "2022-12-03"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+all_letters <- c(letters, LETTERS)
+s <- readLines("data/3b.txt")
+sapply(s, function(q){
+  v <- strsplit(q, "")[[1]]
+  len <- length(v) / 2
+  v1 <- head(v, len)
+  v2 <- tail(v, len)
+  the_letter <- v1[v1 %in% v2] |> unique()
+  which(all_letters == the_letter)
+}) |> sum()
+```
+# Part 2
+
+```{r}
+s <- readLines("3b.txt")
+v <- strsplit(s, "")
+the_groups <- seq(1, length(s), by=3)
+
+the_prios <- c()
+for (the_group in the_groups){
+  the_letter <- 
+    v[[the_group]][which(v[[the_group]] %in% v[[the_group + 1]] &
+                           v[[the_group]] %in% v[[the_group + 2]])][1]
+  the_prio <- which(all_letters %in% the_letter)
+  the_prios <- c(the_prios, the_prio)
+}
+sum(the_prios)
+```
+
