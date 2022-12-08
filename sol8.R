@@ -10,15 +10,11 @@ check_visibility <- function(m, the_row, the_col){
 
 count_direction <- function(m, the_row, the_col, d){
   edges <- c(1, nrow(m), 1, ncol(m))
-  if(d == 1 & the_row == edges[1]) return(0) #going up
-  if(d == 2 & the_row == edges[2]) return(0) #down
-  if(d == 3 & the_col == edges[3]) return(0) #left
-  if(d == 4 & the_col == edges[4]) return(0) #right
-  
-  if(d == 1) v <- c(-1, 0)
-  if(d == 2) v <- c(1, 0)
-  if(d == 3) v <- c(0, -1)
-  if(d == 4) v <- c(0, 1)
+
+  if(d == 1) v <- c(-1, 0) #going up
+  if(d == 2) v <- c(1, 0)  #down
+  if(d == 3) v <- c(0, -1) #left
+  if(d == 4) v <- c(0, 1)  #right
   
   n_visible <- 0
   steps <- 1
@@ -57,8 +53,8 @@ vis_inner + vis_edge
 
 ## Part 2
 vis_scores <- c()
-for(the_row in 1:nrow(m)){
-  for(the_col in 1:ncol(m)){
+for(the_row in 2:(nrow(m)-1)){
+  for(the_col in 2:(ncol(m)-1)){
     vis_scores <-
       c(vis_scores,
         sapply(1:4, function(q) count_direction(m, the_row, the_col, d=q)) |>
