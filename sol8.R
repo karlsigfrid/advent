@@ -9,8 +9,6 @@ check_visibility <- function(m, the_row, the_col){
 }
 
 count_direction <- function(m, the_row, the_col, d){
-  edges <- c(1, nrow(m), 1, ncol(m))
-
   if(d == 1) v <- c(-1, 0) #going up
   if(d == 2) v <- c(1, 0)  #down
   if(d == 3) v <- c(0, -1) #left
@@ -21,8 +19,8 @@ count_direction <- function(m, the_row, the_col, d){
   repeat{
     n_visible <- n_visible + 1
     if(m[the_row + steps * v[1], the_col + steps * v[2]] >= m[the_row, the_col]|
-       (the_row + steps * v[1] == edges[d] & d %in% c(1, 2)) |
-        (the_col + steps * v[2] == edges[d] & d %in% c(3, 4))){
+       (the_row + steps * v[1]) %in% c(1, nrow(m)) |
+        (the_col + steps * v[2]) %in% c(1, ncol(m))){
       break
     }
     steps <- steps + 1
