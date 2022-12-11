@@ -1,6 +1,27 @@
 # Prepare data
 library(dplyr)
 
+prep_data <- function(s){
+  s <- s %>%
+    gsub(".+: (.*)", "\\1", .) %>%
+    gsub(".+(=|by|monkey) (.*)", "\\2", .)
+  m_list <- list()
+  n_m <- (length(s) + 1) / 7
+  start_r <- seq(2, length(s), by=7)
+  for (i in 1:n_m){
+    m_list[[i]] <- list()
+    m_list[[i]][["me"]] <- i
+    m_list[[i]][["items"]] <- s[start_r[i]] %>% strsplit(split=", ") %>%
+      unlist %>% as.numeric
+    m_list[[i]][["oper"]] <- s[start_r[i]+1]
+    m_list[[i]][["divis"]] <- s[start_r[i]+2] %>% as.numeric
+    m_list[[i]][["to"]] <- c(s[start_r[i]+3], s[start_r[i]+4]) %>%
+      as.numeric %>% "+"(1)
+    m_list[[i]][["inspect"]] <- 0
+  }
+  m_list
+}
+
 calc_m <- function(m, mult_all=NULL){
   newvals <- c()
   to <- c()
@@ -25,28 +46,10 @@ update_m <- function(o, m_list){
   m_list
 }
 
-# Prepare data
-s <- readLines("data/11b.txt") %>%
-  gsub(".+: (.*)", "\\1", .) %>%
-  gsub(".+(=|by|monkey) (.*)", "\\2", .)
-m_list <- list()
-n_m <- (length(s) + 1) / 7
-start_r <- seq(2, length(s), by=7)
-for (i in 1:n_m){
-  m_list[[i]] <- list()
-  m_list[[i]][["me"]] <- i
-  m_list[[i]][["items"]] <- s[start_r[i]] %>% strsplit(split=", ") %>%
-    unlist %>% as.numeric
-  m_list[[i]][["oper"]] <- s[start_r[i]+1]
-  m_list[[i]][["divis"]] <- s[start_r[i]+2] %>% as.numeric
-  m_list[[i]][["to"]] <- c(s[start_r[i]+3], s[start_r[i]+4]) %>%
-    as.numeric %>% "+"(1)
-  m_list[[i]][["inspect"]] <- 0
-}
-mult_all <- sapply(m_list, function(q) q$divis) %>% prod
+s <- readLines("data/11b.txt")
 
 ## Part 1
-
+m_list <- prep_data(s=s)
 for(j in 1:20){
   for(i in 1:length(m_list)){
     o <- calc_m(m_list[[i]])
@@ -58,8 +61,9 @@ sapply(m_list, function(q) q$inspect) %>%
   sort(decreasing=T) %>% .[1:2] %>% prod
 
 
-## Part 2 (rerun: prepare data)
-
+## Part 2
+m_list <- prep_data(s=s)
+mult_all <- sapply(m_list, function(q) q$divis) %>% prod
 for(j in 1:10000){
   for(i in 1:length(m_list)){
     o <- calc_m(m_list[[i]], mult_all=mult_all)
