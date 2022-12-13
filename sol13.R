@@ -21,11 +21,7 @@ first <- function(a, b){
     if (class(a[[i]]) != "list" & class(b[[i]]) == "list"){
       a[[i]] <- list(a[[i]])
     }
-    
-    else if (class(a[[i]]) != "list" & class(b[[i]]) == "list"){
-      a[[i]] <- list(a[[i]])
-    }
-  
+
     #Compare to lists
     if (class(a[[i]]) == "list"){
       res <- first(a=a[[i]], b=b[[i]])
