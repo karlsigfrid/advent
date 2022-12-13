@@ -12,10 +12,6 @@ good_neighbors <- function(this_row_col, s , t, down=FALSE){
                            neighbors$col <= ncol(s), ]
   neighbors$is_na <- apply(neighbors, 1, function(q) as.integer(is.na(t[q["row"], q["col"]])))
   neighbors$letter <- apply(neighbors, 1, function(q) (s[q["row"], q["col"]]))
-  neighbors$expand <- apply(neighbors, 1, function(q){
-    ifelse(unlist(q["is_na"]) == 1 &
-             (let_v[unlist(q["letter"])] - let_v[this_letter]) <= 1, 1, 0)
-  })
   if(down){
     neighbors$expand <- apply(neighbors, 1, function(q){
     ifelse(unlist(q["is_na"]) == 1 &
@@ -58,7 +54,6 @@ s <- readLines("data/12b.txt") |>
 
 ## Part 1
 row_col_start <- which(s == "S", arr.ind=TRUE)
-row_col_finish <- which(s == "E", arr.ind=TRUE)
 
 t <- matrix(NA, nrow=nrow(s), ncol=ncol(s))
 t[row_col_start] <- 0
@@ -76,7 +71,6 @@ print(the_cycle - 1)
 
 ## Part 2
 
-row_col_end <- which(s == "a", arr.ind=TRUE)
 row_col_start <- which(s == "E", arr.ind=TRUE)
 
 t <- matrix(NA, nrow=nrow(s), ncol=ncol(s))
