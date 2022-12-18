@@ -1,4 +1,4 @@
-count_adjecent <- function(v, m){
+count_adjacent <- function(v, m){
   dirs <- matrix(c(1,0,0,-1,0,0,0,1,0,0,-1,0,0,0,1,0,0,-1), ncol=3, byrow=T)
   adj_v <- apply(dirs, 1, function(q){
     this_v <- v + q
@@ -7,8 +7,6 @@ count_adjecent <- function(v, m){
   sum(adj_v)
 } 
   
-
-
 #Prepare data
 s <- readLines("data/18b.txt") |>
   strsplit(",") |>
@@ -16,5 +14,5 @@ s <- readLines("data/18b.txt") |>
 m <- do.call(rbind, s)
 
 # Part 1
-num_adjecent <- apply(m, 1, count_adjecent, m=m)
+num_adjacent <- apply(m, 1, count_adjecent, m=m)
 6 * nrow(m) - sum(num_adjecent)
