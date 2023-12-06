@@ -19,3 +19,11 @@ mytime <- paste0(data[1, ], collapse="") |> as.numeric()
 record_distance <- paste0(data[2, ], collapse="") |> as.numeric()
 dist_v <- dist(mytime)
 sum(dist_v > record_distance)
+
+# Alternative, differentiate p * (t - p) = record
+# to get the shortest and longest presses to tie the record
+
+highest_equal <- mytime/2 + sqrt(mytime^2/4 - record_distance)
+lowest_equal <- mytime/2 - sqrt(mytime^2/4 - record_distance)
+
+highest_equal - lowest_equal - 1
