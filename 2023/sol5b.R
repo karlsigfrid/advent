@@ -1,5 +1,5 @@
 #Clean data
-data <- readLines("input5_test.txt")
+data <- readLines("input5.txt")
 seeds <- data[1] |> strsplit(" ") |> unlist() |> tail(-1) |> as.numeric()
 data <- tail(data, -2)
 data <- data |> strsplit(" ")
@@ -50,6 +50,8 @@ min(final)
 onestep2 <- function(input, d){
   output <- input
   for(i in 1:nrow(d)){
+    if(min(input) > (d$source[i] + d$length[i]-1)|
+       (max(input) < d$source[i])) next
     which_fit <- which(input >= d$source[i] &
                          input < d$source[i] + d$length[i])
     larger <- input[which_fit] - d$source[i]
@@ -75,5 +77,5 @@ for(i in seq(1, length(seeds), by=2)){
 }
 min(final2)
 
-
+#46294175
 
