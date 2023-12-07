@@ -16,16 +16,9 @@ list_hands <- strsplit(df$hand, "")
 ## Part 1
 
 card_ranking <- function(list_hands){
-  high <- rep(NA, nrow(df))
-  for(thistype in 1:7){
-    thisindex <- which(df$type == thistype)
-    if(length(thisindex) == 0) next
-    sublist <- list_hands[thisindex]
-    m <- sublist |> data.frame() |>t()
-    thisorder <- order(m[, 1], m[, 2], m[, 3], m[, 4], m[, 5])
-    thisrank <- sapply(1:length(thisorder), function(q) which(thisorder == q))
-    high[thisindex] <- thisrank
-  }
+  m <- list_hands |> data.frame() |> t()
+  thisorder <- order(m[, 1], m[, 2], m[, 3], m[, 4], m[, 5])
+  high <- sapply(1:length(thisorder), function(q) which(thisorder == q))
   return(high)
 }
 
