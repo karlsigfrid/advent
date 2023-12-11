@@ -44,23 +44,9 @@ m2 <- apply(m2, 2, function(q){
   return(rep(2, length(q)))
 })
 
-m2y <- apply(m2, 1, function(q){
-  if(all(q == 2)) return(q)
-  q2 <- q
-  q2[q == 2] <- 1
-  q2
-}) |> t()
-
-m2x <- apply(m2, 2, function(q){
-  if(all(q == 2)) return(q)
-  q2 <- q
-  q2[q == 2] <- 1
-  q2
-})
-
 one_dist <- function(a, b, n=10^6){
-  nx <- sum(rbind(m2x[a[1]:b[1], a[2]:b[2]])[1,] == 2)
-  ny <- sum(cbind(m2y[a[1]:b[1], a[2]:b[2]])[,1] == 2)
+  nx <- sum(m2[a[1], a[2]:b[2]] == 2)
+  ny <- sum(m2[a[1]:b[1], a[2]] == 2)
   totx <- abs(b[2] - a[2]) + nx * (n - 1)
   toty <- abs(b[1] - a[1]) + ny * (n - 1)
   return(totx + toty)
@@ -76,4 +62,3 @@ apply(pos2, 1, function(q){
   b <- strsplit(q[2], ",") |> unlist() |> as.numeric()
   one_dist(a=a, b=b)
 }) |> sum()
-
