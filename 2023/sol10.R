@@ -1,5 +1,5 @@
 # Clean data
-data <- readLines("input10_test2.txt") |>
+data <- readLines("input10.txt") |>
   strsplit("") |> data.frame() |> t()
 #which(data == "S", arr.ind=T)
 #data[18:20, 104:106]
